@@ -33,7 +33,7 @@ def plot_plddt_legend(thresh, colors, title=None):
     plt.legend(thresh, frameon=False, loc="center", fontsize=15)
     ax = plt.gca()
     ax.set_frame_on(False)
-    ax.axis('off')
+    ax.axis("off")
     if title:
         plt.title(title, fontsize=20, pad=20)
     return plt
@@ -49,6 +49,9 @@ def show_pdb(
     width=800,
     height=800,
 ):
+    if isinstance(mutation_color, str):
+        mutation_color = [mutation_color] * len(mutation_resseq)
+
     with open(pdb_filename) as temptfile:
         pdb = "".join([x for x in temptfile])
 
@@ -76,9 +79,10 @@ def show_pdb(
 
         resseq = int(line[22:26].strip())
         if resseq in mutation_resseq:
+            idx = list(mutation_resseq).index(resseq)
             view.setStyle(
                 {"model": -1, "serial": i + 1},
-                {mutation_style: {"color": mutation_color}},
+                {mutation_style: {"color": mutation_color[idx]}},
             )
     plot_plddt_legend(thresh, plddt_bands).show()
 
